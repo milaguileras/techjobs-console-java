@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -36,7 +34,7 @@ public class JobData {
         ArrayList<String> values = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
-            String aValue = row.get(field);
+            String aValue = row.get(field).toLowerCase();
 
             if (!values.contains(aValue)) {
                 values.add(aValue);
@@ -74,7 +72,7 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
@@ -82,6 +80,24 @@ public class JobData {
         }
 
         return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+
+        loadData();
+
+        ArrayList<HashMap<String, String>> job = new ArrayList<>();
+
+        for(HashMap<String,String> row : allJobs){
+            for(Map.Entry<String,String> column : row.entrySet()){
+                //get keys from columns
+                String a = column.getValue().toLowerCase();
+                if(a.contains(value)){
+                    job.add(row);
+                }
+            }
+        }
+        return job;
     }
 
     /**
@@ -124,5 +140,4 @@ public class JobData {
             e.printStackTrace();
         }
     }
-
 }
